@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metode Pembayaran</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .payment-method {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background: #f9f9f9;
+        }
+        .payment-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .payment-header img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+        .payment-header h2 {
+            margin: 0;
+            color: #2c3e50;
+        }
+        .payment-number {
+            background: white;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .copy-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .copy-btn:hover {
+            background: #2980b9;
+        }
+        .qris-container {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .qris-code {
+            max-width: 200px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .qris-code:hover {
+            transform: scale(1.05);
+        }
+        .success-message {
+            color: #3498db;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 5px;
+            display: none;
+        }
+        .qris-info {
+            margin-top: 15px;
+            text-align: left;
+            font-size: 14px;
+            color: #555;
+        }
+        .qris-info p {
+            margin: 5px 0;
+        }
+        .download-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+        }
+        .download-btn:hover {
+            background: #3498db;
+        }
+        .download-btn i {
+            margin-right: 5px;
+        }
+        
+        /* Lightbox CSS */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .lightbox-content {
+            position: relative;
+            text-align: center;
+        }
+        .lightbox img {
+            max-width: 80vw;
+            max-height: 80vh;
+            border: 3px solid white;
+            border-radius: 8px;
+        }
+        .lightbox-btns {
+            margin-top: 15px;
+        }
+        .close-btn {
+            position: absolute;
+            top: -40px;
+            right: -10px;
+            color: white;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .footer {
+          text-align: center;
+          margin-top: 30px;
+          padding: 5px 0;
+          color: #666;
+          font-size: 12px;
+          border-top: 1px solid #eee;
+       }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>PAYMENT HANZXNESIA</h1>
+        
+        <div class="payment-method">
+            <div class="payment-header">
+                <h2>DANA</h2>
+            </div>
+            <p>Silahkan transfer ke nomor DANA berikut:</p>
+            <div class="payment-number">
+                <span id="dana-number">085813855159</span>
+                <button class="copy-btn" onclick="copyToClipboard('dana-number')">Salin</button>
+            </div>
+            <div id="dana-success" class="success-message">Tersalin!</div>
+        </div>
+        
+        <div class="payment-method">
+            <div class="payment-header">
+                <h2>Gopay</h2>
+            </div>
+            <p>Silahkan transfer ke nomor Gopay berikut:</p>
+            <div class="payment-number">
+                <span id="gopay-number">085813855159</span>
+                <button class="copy-btn" onclick="copyToClipboard('gopay-number')">Salin</button>
+            </div>
+            <div id="gopay-success" class="success-message">Tersalin!</div>
+        </div>
+        
+        <div class="payment-method">
+            <div class="payment-header">
+                <h2>OVO</h2>
+            </div>
+            <p>Silahkan transfer ke nomor OVO berikut:</p>
+            <div class="payment-number">
+                <span id="ovo-number">Belum Tersedia!</span>
+                <button class="copy-btn" onclick="copyToClipboard('ovo-number')">Salin</button>
+            </div>
+            <div id="ovo-success" class="success-message">Tersalin!</div>
+        </div>
+        
+        <div class="payment-method">
+            <div class="payment-header">
+                <h2>QRIS</h2>
+            </div>
+            <p>Scan QR code berikut untuk pembayaran:</p>
+            <div class="qris-container">
+                <!-- QRIS dari URL eksternal yang bisa diklik -->
+                <img src="https://img5.pixhost.to/images/2873/566779385_skyzopedia.jpg" 
+                     alt="QR Code Reyy Store" 
+                     class="qris-code" 
+                     onclick="openLightbox('https://img5.pixhost.to/images/2873/566779385_skyzopedia.jpg')">
+                
+                <button class="download-btn" onclick="downloadImage('https://img5.pixhost.to/images/2873/566779385_skyzopedia.jpg', 'QRIS-Reyy-Store.jpg')">
+                    <i class="fas fa-download"></i> Download QRIS
+                </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox untuk QRIS -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeLightbox(event)">&times;</span>
+            <img id="lightbox-img" src="" alt="QRIS">
+            <div class="lightbox-btns">
+                <button class="download-btn" onclick="downloadImage(document.getElementById('lightbox-img').src, 'QRIS-Reyy-Store.jpg')">
+                    <i class="fas fa-download"></i> Download QRIS
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(id) {
+            const element = document.getElementById(id);
+            const text = element.innerText;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                // Show success message
+                const successElement = document.getElementById(id.split('-')[0] + '-success');
+                successElement.style.display = 'block';
+                
+                // Hide success message after 2 seconds
+                setTimeout(() => {
+                    successElement.style.display = 'none';
+                }, 2000);
+            }).catch(err => {
+                console.error('Gagal menyalin: ', err);
+            });
+        }
+
+        // Fungsi untuk lightbox QRIS
+        function openLightbox(imgSrc) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            
+            lightbox.style.display = 'flex';
+            lightboxImg.src = imgSrc;
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox(event) {
+            if (event.target.classList.contains('lightbox') || event.target.classList.contains('close-btn')) {
+                document.getElementById('lightbox').style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Fungsi untuk download gambar
+        function downloadImage(url, filename) {
+            fetch(url)
+                .then(response => response.blob())
+                .then(blob => {
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                })
+                .catch(err => {
+                    console.error('Gagal mengunduh gambar: ', err);
+                    // Fallback untuk browser yang tidak support fetch
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                });
+        }
+
+        // Tutup lightbox saat tekan ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                document.getElementById('lightbox').style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+<div class="footer">
+    © 2025 Hanzxnesia Payment. 
+    All rights reserved | Website simple all payment
+</div>
+</body>
+</html>
